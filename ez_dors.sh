@@ -62,12 +62,23 @@ apt -y install r-base r-base-dev r-recommended gdebi-core build-essential libcur
 echo -e '## set default CRAN mirror\noptions( repos = c(CRAN="https://cloud.r-project.org/") )\n' >> /usr/lib/R/library/base/R/Rprofile
 
 curl -LO https://download2.rstudio.org/rstudio-server-1.0.153-amd64.deb
-md5sum rstudio-server-1.0.153-amd64.deb| grep b8df8478e446851dbe0ce893d32e3e67
 
-echo -e "\n\n\nIf the md5 doesn't match, abort with Ctrl-C. Otherwise:\n\n"
-read -p "Press key to continue.. " -n1 -s
+##### Old test. New test is in "if" with md5sum
+# md5sum rstudio-server-1.0.153-amd64.deb| grep b8df8478e446851dbe0ce893d32e3e67
+#
+# echo -e "\n\n\nIf the md5 doesn't match, abort with Ctrl-C. Otherwise:\n\n"
+# read -p "Press key to continue.. " -n1 -s
+# 
+####
 
-gdebi --n rstudio-server-1.0.153-amd64.deb
+if [ md5sum --status -c rstudio-server-1.0.153-amd64.deb.md5 ]
+
+  then gdebi --n rstudio-server-1.0.153-amd64.deb
+
+  else echo -e "\n\n\n\t *** MD5 CHECKSUM FAILURE!!! ABORTING!!! ***\n\n\n" ; exit
+
+fi
+
 
 dpkg --configure -a
 apt update
@@ -80,4 +91,6 @@ echo -e "\nHere's your IP addres info, as well:"
 curl ipinfo.io
 echo -e "\n\n\n"
 
+wait 2
+echo -e "\tGOOD LUCK!\n\n\n"
 
