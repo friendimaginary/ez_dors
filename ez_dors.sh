@@ -72,11 +72,11 @@ curl -LO https://download2.rstudio.org/rstudio-server-1.0.153-amd64.deb
 # 
 ####
 
-if [ md5sum --status -c rstudio-server-1.0.153-amd64.deb.md5 ]
-
-  then gdebi --n rstudio-server-1.0.153-amd64.deb
-
-  else echo -e "\n\n\n\t *** MD5 CHECKSUM FAILURE!!! ABORTING!!! ***\n\n\n" ; exit
+if  md5sum --status -c rstudio-server-1.0.153-amd64.deb.md5 
+then 
+    gdebi --n rstudio-server-1.0.153-amd64.deb
+else
+    echo -e "\n\n\n\t *** MD5 CHECKSUM FAILURE!!! ABORTING!!! ***\n\n\n" ; exit
 
 fi
 
