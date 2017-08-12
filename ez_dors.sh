@@ -5,39 +5,40 @@ echo "Hello. I am about to configure RStudio Server for you, on what  I assume "
 echo "is an Ubuntu 16.04 LTS droplet running in Digital Ocean. This script may "
 echo "work in other circumstances, but that is how it was written and tested. "
 
-wait 2
+sleep 2
 
 echo -e "\n\n\nFor the purposes of configuring git, can I get your name?"
 echo -e "You can leave it blank or say 'Jon Snow' if you don't trust me.\n"
 read -p "Name:" git_name
 
-echo read -p "Please enter the number to validate :" mynum
 echo -e "\nFor the purposes of configuring git, can I get your email address?"
 echo -e "You can leave it blank or say 'snow@thewall.not_a_real.tld if you don't trust me.\n"
 read -p "Email:" git_email
 
+nom_len=$(expr length "$git_name")
+eml_len=$(expr length "$git_email")
 
-if [ expr length "$(echo $git_email)" < 1 ]
-  then git_email = "snow@thewall.not_a_real.tld"
+if [ $eml_len -lt 1 ]
+  then git_email="snow@thewall.not_a_real.tld"
 fi
 
-if [expr length "$(echo $git_name)" < 1 ]
-  then git_name = "Jon Snow"
+if [ $nom_len -lt 1 ]
+  then git_name="Jon Snow"
 fi
 
-git config --global user.name  $git_name
-git config --global user.email $git_email
+git config --global user.name  "$git_name"
+git config --global user.email "$git_email"
 
 echo -e "\n\n\nThanks. Here is your git config:"
 echo ""
-cat .gitconfig
+cat ~/.gitconfig
 echo -e "\n\n\n"
 
-wait 2
+sleep 2
 echo -e "Now, pick a username and password to use for RStudio.\n"
 
 read -p "username:" rstudio_user
-read -p "password:" rstudio_pass
+read -sp "password:" rstudio_pass
 
 useradd -m $rstudio_user
 echo "$rstudio_user:$rstudio_pass" | chpasswd
